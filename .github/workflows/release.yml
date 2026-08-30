@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    shell: bash -xeuo pipefail {0}
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build (release)
+        run: swift build -c release
+
+      - name: Package binary as tarball
+        run: |
+          cd .build/release
+          tag="${GITHUB_REF_NAME#v}"
+          tar -czf "windower-${tag}.tar.gz" windower
+          echo "--- sha256 ---"
+          shasum -a 256 "windower-${tag}.tar.gz"
+
+      - name: Create/update GitHub release and upload
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          release="v${tag}"
+          gh release view "$release" >/dev/null 2>&1 || gh release create "$release" \
+            --title "windower ${tag}" --notes "Prebuilt windower ${tag}"
+          gh release upload "$release" ".build/release/windower-${tag}.tar.gz" --clobber
