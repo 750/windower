@@ -25,6 +25,24 @@ This lets you run it right from the repo (`./windower list`). A Homebrew formula
 would run `swift build -c release` and install `.build/release/windower` into its
 own prefix, so this script doesn't install to a fixed system path.
 
+## Homebrew
+
+The Homebrew formula lives in this repo (`Formula/windower.rb`), so install via a
+URL-tap (Homebrew 6 requires trusting the tap):
+
+```bash
+brew tap 750/windower https://github.com/750/windower.git
+brew trust 750/windower                       # Homebrew 6: trust the tap
+brew install windower
+```
+
+`brew install` builds from source (`.build/release/windower` is installed into the
+Homebrew prefix). The formula has no external dependencies; Swift comes from Xcode
+**Command Line Tools**, so a reasonably recent Xcode/CLT is required.
+
+On Homebrew 6 this tap is registered as `750/homebrew-windower` (it normalizes the
+name), but the source is the same `750/windower` repo.
+
 ## Usage
 
 ```bash
