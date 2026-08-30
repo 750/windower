@@ -1,14 +1,15 @@
 class Windower < Formula
   desc "Fast macOS CLI to list and focus windows"
   homepage "https://github.com/750/windower"
-  url "https://github.com/750/windower/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "deefd8e2651f084e42715ff4f624794737e320543ac5bce2cb29b251ea592622"
+  url "https://github.com/750/windower/releases/download/v0.2.0/windower-0.2.0.tar.gz",
+      using: :homebrew_curl
+  version "0.2.0"
+  sha256 "762bababda69a3f4b55cf901010d6f5385dd7aeee3244d60d8a7960bf20d010e"
   license "MIT"
 
-  # Swift is provided by Xcode Command Line Tools on macOS (no `swift` brew dep).
+  # Prebuilt binary — no compiler/Xcode needed at install time.
   def install
-    system "swift", "build", "-c", "release", "--disable-sandbox"
-    bin.install ".build/release/windower"
+    bin.install "windower"
   end
 
   test do
