@@ -36,12 +36,25 @@ brew trust 750/windower                       # Homebrew 6: trust the tap
 brew install windower
 ```
 
-`brew install` builds from source (`.build/release/windower` is installed into the
-Homebrew prefix). The formula has no external dependencies; Swift comes from Xcode
-**Command Line Tools**, so a reasonably recent Xcode/CLT is required.
+The formula installs a **prebuilt binary** from a GitHub Release (built on CI), so
+`brew install` doesn't compile anything. Homebrew 6 nonetheless requires a recent
+Xcode/CLT to run the install step unless a Homebrew **bottle** is published, so on
+a machine with an old toolchain you'll need to update the CLT (or we can publish
+bottles via the tap CI).
 
 On Homebrew 6 this tap is registered as `750/homebrew-windower` (it normalizes the
 name), but the source is the same `750/windower` repo.
+
+### Prebuilt binary without Homebrew
+
+If you just want the binary and don't need `brew`:
+
+```bash
+curl -L https://github.com/750/windower/releases/download/v0.2.0/windower-0.2.0.tar.gz | tar -xz
+./windower list
+# or put it on your PATH
+sudo mv windower /usr/local/bin/windower
+```
 
 ## Usage
 
